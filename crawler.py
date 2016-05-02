@@ -1,6 +1,5 @@
 import requests
 import re
-import Image
 
 requests.packages.urllib3.disable_warnings()
 
