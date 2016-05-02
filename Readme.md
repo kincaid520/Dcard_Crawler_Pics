@@ -1,7 +1,8 @@
-#self.test
-run main.py
+#Usage:
 
-`python main.py`
+`python main.py [pages]
+				[forum]
+				[popular]`
 
 This program will output a file "output.html"
 open the file with a browser to see the result
