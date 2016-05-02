@@ -5,16 +5,21 @@ import Image
 requests.packages.urllib3.disable_warnings()
 
 SAVETOFILE = False
-POPULARLINK='https://www.dcard.tw/api/forum/all/%d/popular'
-LINK='https://www.dcard.tw/api/forum/all/%d'
-PAGES=1
+POPULARLINK='https://www.dcard.tw/api/forum/%s/%d/popular'
+NORMALLINK='https://www.dcard.tw/api/forum/%s/%d'
+LINK=NORMALLINK
+PAGES=3
+FORUM="all"
 
 post_id=[]
 post_link=[]
 
-def get():
-	for page in range(1,PAGES+1):
-		r = requests.get(POPULARLINK%(page))
+def get(PAGES=PAGES, FORUM=FORUM, POPULAR=False):
+	if POPULAR:
+		LINK = POPULARLINK
+	for page in range( 1, int(PAGES)+1 ):
+		print("Scaning page %d"%page)
+		r = requests.get( LINK%(FORUM, page) )
 		article = r.json()
 
 
@@ -31,12 +36,14 @@ def get():
 
 		# find every link in every article
 		for id in post_id:
-			r = requests.get('https://www.dcard.tw/api/post/all/'+str(id))
+			print(">Searching in ID %d"%id)
+			r = requests.get('https://www.dcard.tw/api/post/all/'+str(id))# this website is fixed
 			article = r.json()
 			content =  article['version'][0]['content'] # looking into the content
 			p = re.compile(ur'(http:\/\/i?.?imgur.com\/[\w]+)')
 			result= re.findall(p,content)
 			for i in result:
+				print("  Capturing picture from %s"%i)
 				second_r = requests.get(i)
 				second_content = second_r.content
 				second_p = re.compile(ur'(http:\/\/i?.?imgur.com\/\w+\.[jpeng]+)')
