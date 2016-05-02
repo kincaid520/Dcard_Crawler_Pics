@@ -6,7 +6,6 @@ requests.packages.urllib3.disable_warnings()
 SAVETOFILE = False
 POPULARLINK='https://www.dcard.tw/api/forum/%s/%d/popular'
 NORMALLINK='https://www.dcard.tw/api/forum/%s/%d'
-LINK=NORMALLINK
 PAGES=3
 FORUM="all"
 
@@ -14,6 +13,7 @@ post_id=[]
 post_link=[]
 
 def get(PAGES=PAGES, FORUM=FORUM, POPULAR=False):
+	LINK=NORMALLINK
 	if POPULAR:
 		LINK = POPULARLINK
 	for page in range( 1, int(PAGES)+1 ):
