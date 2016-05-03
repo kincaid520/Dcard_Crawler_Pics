@@ -33,4 +33,4 @@ links = crawler.get(page, forum, popular)
 
 f = open("output.html","w")
 for link in links:
-	f.write("<img width=\"%s\" src=\"%s\">"%(WEBPICWIDTH,link))	
+	f.write("<a href=%s ><img width=\"%s\" src=\"%s\" border=\"0\"></a>" %(link[0], WEBPICWIDTH, link[1]) )	
