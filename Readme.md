@@ -2,6 +2,7 @@
 run main.py
 
 `python main.py
+test test
 `
 
 will output a file "output.html"
