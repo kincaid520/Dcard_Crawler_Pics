@@ -1,8 +1,10 @@
 #Usage:
 
 `python main.py [pages]`
-`				[forum]`
-`				[popular]`
+
+`               [forum]`
+
+`               [popular]`
 
 This program will output a file "output.html"
 open the file with a browser to see the result
