@@ -47,7 +47,7 @@ def get(PAGES=PAGES, FORUM=FORUM, POPULAR=False):
 			second_content = second_r.content
 			second_p = re.compile(ur'(http:\/\/i?.?imgur.com\/\w+\.[jpeng]+)')
 			res_pic = re.findall(second_p, second_content)
-			post_link.append(res_pic[0])
+			post_link.append(['https://www.dcard.tw/f/all/p/'+str(id), res_pic[0]] )
 
 	# save to file
 	if SAVETOFILE:
