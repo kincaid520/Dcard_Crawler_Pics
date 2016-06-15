@@ -1,4 +1,4 @@
-#Usage:
+#Usage
 
 `python main.py [<pages>] [<forum>] [<popular>]`
 
@@ -10,3 +10,7 @@ open the file with a browser to see the result
 `import crawler`
 
 `crawler.get()` will return a list of [post_link, image links]
+
+#To-do-list
+
+page function
