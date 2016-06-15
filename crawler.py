@@ -4,8 +4,9 @@ import re
 requests.packages.urllib3.disable_warnings()
 
 SAVETOFILE = False
-POPULARLINK='https://www.dcard.tw/api/forum/%s/%d/popular'
-NORMALLINK='https://www.dcard.tw/api/forum/%s/%d'
+POSTLINK='https://www.dcard.tw/f/%s/p/%s'
+POPULARLINK='https://www.dcard.tw/_api/%sposts?popular=true'
+NORMALLINK='https://www.dcard.tw/_api/%sposts?popular=false'
 PAGES=3
 FORUM="all"
 
@@ -16,29 +17,38 @@ def get(PAGES=PAGES, FORUM=FORUM, POPULAR=False):
 	LINK=NORMALLINK
 	if POPULAR:
 		LINK = POPULARLINK
-	for page in range( 1, int(PAGES)+1 ):
-		print("Scaning page %d"%page)
-		r = requests.get( LINK%(FORUM, page) )
-		article = r.json()
+	#for page in range( 1, int(PAGES)+1 ):
+	#	print("Scaning page %d"%page)
+	#	r = requests.get( LINK%(FORUM, page) )
+	#	article = r.json()
+	if FORUM!="all":
+		FORUM = "forums/"+FORUM+"/"
+	else:
+		FORUM = ""
+	r = requests.get( LINK%(FORUM ) )
+	article = r.json()
+	
+	#check the api 
+	#print(LINK%(FORUM))
 
+	"""# See the components
+	for post in article:
+		for typ in post:
+			print(typ)
+	"""
 
-		"""# See the components
-		for post in article:
-			for typ in post:
-				print(typ)
-		"""
-
-		# find every id of article, store to post_id[] 
-		for post in article:
-			post_id.append(post['id'])
+	# find every id of article, store to post_id[] 
+	for post in article:
+		post_id.append(post['id'])
 	
 
 	# find every link in every article
 	for id in post_id:
 		print(">Searching in ID %d"%id)
-		r = requests.get('https://www.dcard.tw/api/post/all/'+str(id))# this website is fixed
+		r = requests.get('https://www.dcard.tw/_api/posts/'+str(id)+'?')# this website is fixed
 		article = r.json()
-		content =  article['version'][0]['content'] # looking into the content
+		content =  article['content'] # looking into the content
+		forumAlias = article['forumAlias'] # looking into the forumAlias
 		p = re.compile(ur'(http:\/\/i?.?imgur.com\/[\w]+)')
 		result= re.findall(p,content)
 		for i in result:
@@ -47,7 +57,7 @@ def get(PAGES=PAGES, FORUM=FORUM, POPULAR=False):
 			second_content = second_r.content
 			second_p = re.compile(ur'(http:\/\/i?.?imgur.com\/\w+\.[jpeng]+)')
 			res_pic = re.findall(second_p, second_content)
-			post_link.append(['https://www.dcard.tw/f/all/p/'+str(id), res_pic[0]] )
+			post_link.append([POSTLINK%(forumAlias, str(id)), res_pic[0]] )
 
 	# save to file
 	if SAVETOFILE:

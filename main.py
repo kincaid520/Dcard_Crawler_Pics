@@ -31,6 +31,6 @@ if not temp==[]:
 
 links = crawler.get(page, forum, popular)
 
-f = open("output.html","w")
+f = open("index.html","w")
 for link in links:
-	f.write("<a href=%s ><img width=\"%s\" src=\"%s\" border=\"0\"></a>" %(link[0], WEBPICWIDTH, link[1]) )	
+	f.write("<a href=%s ><img width=\"%s\" src=\"%s\" border=\"0\"></a>\n" %(link[0], WEBPICWIDTH, link[1]) )	
