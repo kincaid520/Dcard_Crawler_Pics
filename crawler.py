@@ -20,6 +20,7 @@ def get(PAGES=PAGES, FORUM=FORUM, POPULAR=False):
 		LINK = APILINK+"popular=true"
 	else:
 		LINK = APILINK+"popular=false"
+	print( "Forum: %s, Popular: %s, Pages: %s" %(FORUM, POPULAR, PAGES) )
 
 	#for page in range( 1, int(PAGES)+1 ):
 	#	print("Scaning page %d"%page)
