@@ -1,6 +1,6 @@
 #Usage
 
-`python main.py [<pages>] [<forum>] [<popular>]`
+`python main.py [<forum>] [<popular>]`
 
 This program will output a file "output.html"
 
