@@ -1,6 +1,6 @@
 #Usage
 
-`python main.py [<forum>] [<popular>]`
+`python main.py [<pages>] [<forum>] [<popular>]`
 
 This program will output a file "output.html"
 
@@ -10,7 +10,3 @@ open the file with a browser to see the result
 `import crawler`
 
 `crawler.get()` will return a list of [post_link, image links]
-
-#To-do-list
-
-page function

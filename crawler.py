@@ -5,8 +5,9 @@ requests.packages.urllib3.disable_warnings()
 
 SAVETOFILE = False
 POSTLINK='https://www.dcard.tw/f/%s/p/%s'
-POPULARLINK='https://www.dcard.tw/_api/%sposts?popular=true'
-NORMALLINK='https://www.dcard.tw/_api/%sposts?popular=false'
+#POPULARLINK='https://www.dcard.tw/_api/%sposts?popular=true'
+#NORMALLINK='https://www.dcard.tw/_api/%sposts?popular=false'
+APILINK='https://www.dcard.tw/_api/%sposts?'
 PAGES=3
 FORUM="all"
 
@@ -14,35 +15,46 @@ post_id=[]
 post_link=[]
 
 def get(PAGES=PAGES, FORUM=FORUM, POPULAR=False):
-	LINK=NORMALLINK
+	#LINK=NORMALLINK
 	if POPULAR:
-		LINK = POPULARLINK
+		LINK = APILINK+"popular=true"
+	else:
+		LINK = APILINK+"popular=false"
+
 	#for page in range( 1, int(PAGES)+1 ):
 	#	print("Scaning page %d"%page)
 	#	r = requests.get( LINK%(FORUM, page) )
 	#	article = r.json()
+
+	## find all post id.
 	if FORUM!="all":
 		FORUM = "forums/"+FORUM+"/"
 	else:
 		FORUM = ""
-	r = requests.get( LINK%(FORUM ) )
-	article = r.json()
+
+	## page function
+	for page in range( 1, int(PAGES)+1 ):
+		print("Scaning page %d"%page)
+
+		if page ==1:
+			r = requests.get( LINK%(FORUM) )
+		else:
+			r = requests.get( LINK%(FORUM) + '&before=' + str(post_id[len(post_id)-1]) ) ##add the last id
+		article = r.json()
 	
-	#check the api 
-	#print(LINK%(FORUM))
+		## check the api 
+		#print(LINK%(FORUM))
 
-	"""# See the components
-	for post in article:
-		for typ in post:
-			print(typ)
-	"""
+		## See the components
+		#for post in article:
+		#	for typ in post:
+		#		print(typ)
 
-	# find every id of article, store to post_id[] 
-	for post in article:
-		post_id.append(post['id'])
+		## find every id of article, store to post_id[] 
+		for post in article:
+			post_id.append(post['id'])
 	
-
-	# find every link in every article
+	## find every link in every article
 	for id in post_id:
 		print(">Searching in ID %d"%id)
 		r = requests.get('https://www.dcard.tw/_api/posts/'+str(id)+'?')# this website is fixed
@@ -59,7 +71,7 @@ def get(PAGES=PAGES, FORUM=FORUM, POPULAR=False):
 			res_pic = re.findall(second_p, second_content)
 			post_link.append([POSTLINK%(forumAlias, str(id)), res_pic[0]] )
 
-	# save to file
+	## save to file
 	if SAVETOFILE:
 		file=open('output','w')
 		for each in post_link:
