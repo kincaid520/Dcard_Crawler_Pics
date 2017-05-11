@@ -62,13 +62,13 @@ def get(PAGES=PAGES, FORUM=FORUM, POPULAR=False):
 		article = r.json()
 		content =  article['content'] # looking into the content
 		forumAlias = article['forumAlias'] # looking into the forumAlias
-		p = re.compile(ur'(http:\/\/i?.?imgur.com\/[\w]+)')
+		p = re.compile(ur'(https?:\/\/i?.?imgur.com\/[\w]+)')
 		result= re.findall(p,content)
 		for i in result:
 			print("  Capturing picture from %s"%i)
 			second_r = requests.get(i)
 			second_content = second_r.content
-			second_p = re.compile(ur'(http:\/\/i?.?imgur.com\/\w+\.[jpeng]+)')
+			second_p = re.compile(ur'(https?:\/\/i?.?imgur.com\/\w+\.[jpeng]+)')
 			res_pic = re.findall(second_p, second_content)
 			post_link.append([POSTLINK%(forumAlias, str(id)), res_pic[0]] )
 
